@@ -1,0 +1,166 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %}BUA Renting Service{% endblock %}</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --bg: #f4f7fb;
+        --surface: #ffffff;
+        --text: #15324b;
+        --muted: #5c7288;
+        --primary: #0066cc;
+        --primary-dark: #004f9e;
+        --border: #dbe5f0;
+        --shadow: 0 10px 30px rgba(21, 50, 75, 0.08);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: Arial, Helvetica, sans-serif;
+        background: linear-gradient(180deg, #eef5ff 0%, var(--bg) 100%);
+        color: var(--text);
+      }
+
+      .navbar {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 2rem;
+        background: rgba(255, 255, 255, 0.95);
+        border-bottom: 1px solid var(--border);
+        backdrop-filter: blur(8px);
+      }
+
+      .brand {
+        font-weight: 700;
+        font-size: 1.1rem;
+        color: var(--text);
+        text-decoration: none;
+      }
+
+      .nav-links {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+      }
+
+      .nav-links a,
+      .button-link {
+        text-decoration: none;
+        color: var(--primary);
+        font-weight: 600;
+      }
+
+      .button-link {
+        display: inline-block;
+        padding: 0.8rem 1.1rem;
+        background: var(--primary);
+        color: white;
+        border-radius: 999px;
+        transition:
+          background 0.2s ease-in-out,
+          transform 0.2s ease-in-out;
+      }
+
+      .button-link:hover,
+      .button-link:focus-visible {
+        background: var(--primary-dark);
+        transform: translateY(-1px);
+      }
+
+      main {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 3rem 1.5rem 4rem;
+      }
+
+      .hero {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 2rem;
+        align-items: center;
+        margin-bottom: 2.5rem;
+      }
+
+      .hero-card,
+      .endpoint-card {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        box-shadow: var(--shadow);
+      }
+
+      .hero-card {
+        padding: 2rem;
+      }
+
+      .hero h1 {
+        font-size: clamp(2rem, 4vw, 3.5rem);
+        margin-bottom: 1rem;
+      }
+
+      .hero p,
+      .endpoint-card p {
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
+      .endpoint-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 1.25rem;
+      }
+
+      .endpoint-card {
+        padding: 1.5rem;
+      }
+
+      .endpoint-card h2 {
+        margin-top: 0;
+        margin-bottom: 0.75rem;
+      }
+
+      .endpoint-path {
+        display: inline-block;
+        margin: 0.75rem 0 1rem;
+        padding: 0.35rem 0.65rem;
+        border-radius: 999px;
+        background: #eef5ff;
+        color: var(--primary-dark);
+        font-family: "Courier New", Courier, monospace;
+        font-size: 0.9rem;
+      }
+
+      @media (max-width: 640px) {
+        .navbar {
+          padding: 1rem 1.25rem;
+        }
+
+        main {
+          padding: 2rem 1rem 3rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar">
+      <a class="brand" href="/">BUA Renting Service</a>
+      <div class="nav-links">
+        <a href="/users/">Users</a>
+        <a href="/items/">Items</a>
+        <a href="/loans/">Loans</a>
+      </div>
+    </nav>
+    <main>{% block content %}{% endblock %}</main>
+  </body>
+</html>

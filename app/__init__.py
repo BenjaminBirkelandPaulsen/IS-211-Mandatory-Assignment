@@ -19,10 +19,12 @@ def create_app(config=None):
 
     db.init_app(app)
 
+    from .routes.home import home_bp
     from .routes.users import users_bp
     from .routes.items import items_bp
     from .routes.loans import loans_bp
 
+    app.register_blueprint(home_bp)
     app.register_blueprint(users_bp)
     app.register_blueprint(items_bp)
     app.register_blueprint(loans_bp)
