@@ -1,0 +1,26 @@
+services:
+  db:
+    image: postgres:16
+    restart: always
+    environment:
+      POSTGRES_USER: bua
+      POSTGRES_PASSWORD: bua_password
+      POSTGRES_DB: bua_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  web:
+    build: .
+    restart: always
+    ports:
+      - "5000:5000"
+    environment:
+      DATABASE_URL: postgresql://bua:bua_password@db:5432/bua_db
+      SECRET_KEY: change-me-in-production
+    depends_on:
+      - db
+
+volumes:
+  postgres_data:

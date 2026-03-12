@@ -1,0 +1,40 @@
+{% extends "base.html" %} {% block title %}Home | BUA Renting Service{% endblock
+%} {% block content %}
+<section class="hero">
+  <div class="hero-card">
+    <p><strong>Welcome</strong></p>
+    <h1>Manage users, gear, and loans in one place.</h1>
+    <p>
+      This BUA demo app gives you a quick way to browse the API resources and
+      jump straight into the parts of the system you want to test.
+    </p>
+    <a class="button-link" href="/items/">Explore available items</a>
+  </div>
+  <div class="hero-card">
+    <h2>Quick start</h2>
+    <p>
+      Use the navigation bar to open each resource directly in your browser. The
+      linked pages return JSON, which is perfect for API testing while you build
+      out more functionality.
+    </p>
+  </div>
+</section>
+
+<section>
+  <h2>Available sections</h2>
+  <div class="endpoint-grid">
+    {% for endpoint in endpoints %}
+    <article class="endpoint-card">
+      <h2>{{ endpoint.name }}</h2>
+      <p>{{ endpoint.description }}</p>
+      <span class="endpoint-path">{{ endpoint.path }}</span>
+      <div>
+        <a class="button-link" href="{{ endpoint.path }}"
+          >Open {{ endpoint.name }}</a
+        >
+      </div>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}
