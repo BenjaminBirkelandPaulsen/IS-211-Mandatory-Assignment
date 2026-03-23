@@ -1,9 +1,45 @@
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, redirect, render_template, request, url_for
 
 from ..extensions import db
 from ..models import User
 
 users_bp = Blueprint("users", __name__, url_prefix="/users")
+
+
+@users_bp.route("/page", methods=["GET"])
+def users_page():
+    """Render a browser-friendly page for user management."""
+    users = User.query.order_by(User.id.desc()).all()
+    status = request.args.get("status", "")
+    return render_template("users.html", users=users, status=status)
+
+
+@users_bp.route("/page/create", methods=["POST"])
+def users_page_create():
+    """Create a user from an HTML form submission."""
+    name = request.form.get("name", "").strip()
+    email = request.form.get("email", "").strip()
+    phone = request.form.get("phone", "").strip() or None
+
+    if not name or not email:
+        return redirect(url_for("users.users_page", status="missing_fields"))
+
+    if User.query.filter_by(email=email).first():
+        return redirect(url_for("users.users_page", status="duplicate_email"))
+
+    user = User(name=name, email=email, phone=phone)
+    db.session.add(user)
+    db.session.commit()
+    return redirect(url_for("users.users_page", status="created"))
+
+
+@users_bp.route("/page/<int:user_id>/delete", methods=["POST"])
+def users_page_delete(user_id):
+    """Delete a user from the browser page."""
+    user = db.get_or_404(User, user_id)
+    db.session.delete(user)
+    db.session.commit()
+    return redirect(url_for("users.users_page", status="deleted"))
 
 
 @users_bp.route("/", methods=["GET"])

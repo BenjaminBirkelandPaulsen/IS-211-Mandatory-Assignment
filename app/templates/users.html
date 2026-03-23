@@ -1,0 +1,52 @@
+{% extends "base.html" %} {% block title %}Users | BUA Renting Service{%
+endblock %} {% block content %}
+<section class="hero">
+  <div class="hero-card">
+    <p><strong>User Management</strong></p>
+    <h1>Register and manage BUA members</h1>
+    <p>
+      Use this page to add users and remove users that are no longer active.
+    </p>
+  </div>
+  <div class="hero-card">
+    <h2>Create a user</h2>
+    <form method="post" action="/users/page/create" class="stack-form">
+      <label>Name</label>
+      <input name="name" type="text" required />
+
+      <label>Email</label>
+      <input name="email" type="email" required />
+
+      <label>Phone</label>
+      <input name="phone" type="text" />
+
+      <button type="submit" class="button-link">Add user</button>
+    </form>
+  </div>
+</section>
+
+{% if status %}
+<p class="status-line">Status: {{ status }}</p>
+{% endif %}
+
+<section>
+  <h2>Registered users</h2>
+  <div class="endpoint-grid">
+    {% for user in users %}
+    <article class="endpoint-card">
+      <h2>{{ user.name }}</h2>
+      <p>Email: {{ user.email }}</p>
+      <p>Phone: {{ user.phone or "N/A" }}</p>
+      <form method="post" action="/users/page/{{ user.id }}/delete">
+        <button type="submit" class="danger-btn">Delete</button>
+      </form>
+    </article>
+    {% else %}
+    <article class="endpoint-card">
+      <h2>No users yet</h2>
+      <p>Create your first user using the form above.</p>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}
