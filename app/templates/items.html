@@ -1,0 +1,92 @@
+{% extends "base.html" %} {% block title %}Items | BUA Renting Service{%
+endblock %} {% block content %}
+<section class="hero">
+  <div class="hero-card">
+    <p><strong>Inventory Management</strong></p>
+    <h1>Track and maintain equipment</h1>
+    <p>Create items, edit details, and remove items when needed.</p>
+  </div>
+  <div class="hero-card">
+    <h2>Create an item</h2>
+    <form method="post" action="/items/page/create" class="stack-form">
+      <label>Name</label>
+      <input name="name" type="text" required />
+
+      <label>Description</label>
+      <input name="description" type="text" />
+
+      <label>Category</label>
+      <input name="category" type="text" />
+
+      <button type="submit" class="button-link">Add item</button>
+    </form>
+  </div>
+</section>
+
+{% if status %}
+<p class="status-line">Status: {{ status }}</p>
+{% endif %}
+
+<section>
+  <h2>Items</h2>
+  <p>
+    <a href="/items/page">Show all</a> |
+    <a href="/items/page?available=true">Show available only</a>
+    {% if available_only %}(active filter){% endif %}
+  </p>
+  <div class="endpoint-grid">
+    {% for item in items %}
+    <article class="endpoint-card">
+      <h2>{{ item.name }}</h2>
+      <p>{{ item.description or "No description" }}</p>
+      <p>Category: {{ item.category or "N/A" }}</p>
+      <p>Available: {{ "Yes" if item.available else "No" }}</p>
+
+      <form
+        method="post"
+        action="/items/page/{{ item.id }}/update"
+        class="stack-form compact"
+      >
+        <label>Name</label>
+        <input name="name" type="text" value="{{ item.name }}" required />
+
+        <label>Description</label>
+        <input
+          name="description"
+          type="text"
+          value="{{ item.description or '' }}"
+        />
+
+        <label>Category</label>
+        <input name="category" type="text" value="{{ item.category or '' }}" />
+
+        <label class="checkbox-row">
+          <input
+            name="available"
+            type="checkbox"
+            {%
+            if
+            item.available
+            %}checked{%
+            endif
+            %}
+          />
+          Available for loan
+        </label>
+
+        <button type="submit" class="button-link">Update</button>
+      </form>
+
+      <form method="post" action="/items/page/{{ item.id }}/delete">
+        <button type="submit" class="danger-btn">Delete</button>
+      </form>
+    </article>
+    {% else %}
+    <article class="endpoint-card">
+      <h2>No items yet</h2>
+      <p>Create your first item using the form above.</p>
+    </article>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

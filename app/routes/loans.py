@@ -1,11 +1,79 @@
 from datetime import datetime, timezone
 
-from flask import Blueprint, jsonify, request
+from flask import Blueprint, jsonify, redirect, render_template, request, url_for
 
 from ..extensions import db
 from ..models import Item, Loan, User
 
 loans_bp = Blueprint("loans", __name__, url_prefix="/loans")
+
+
+@loans_bp.route("/page", methods=["GET"])
+def loans_page():
+    """Render a browser-friendly page for loan management."""
+    active_only = request.args.get("active", "").lower() == "true"
+    status = request.args.get("status", "")
+
+    query = Loan.query.order_by(Loan.id.desc())
+    loans = query.all()
+    if active_only:
+        loans = [loan for loan in loans if loan.is_active]
+
+    users = User.query.order_by(User.name.asc()).all()
+    items = Item.query.order_by(Item.name.asc()).all()
+
+    return render_template(
+        "loans.html",
+        loans=loans,
+        users=users,
+        items=items,
+        status=status,
+        active_only=active_only,
+    )
+
+
+@loans_bp.route("/page/create", methods=["POST"])
+def loans_page_create():
+    """Create a loan from an HTML form submission."""
+    user_id = request.form.get("user_id", type=int)
+    item_id = request.form.get("item_id", type=int)
+    due_date_str = request.form.get("due_date", "").strip()
+
+    if not user_id or not item_id:
+        return redirect(url_for("loans.loans_page", status="missing_fields"))
+
+    _user = db.get_or_404(User, user_id)
+    item = db.get_or_404(Item, item_id)
+
+    if not item.available:
+        return redirect(url_for("loans.loans_page", status="item_unavailable"))
+
+    due_date = None
+    if due_date_str:
+        try:
+            due_date = datetime.fromisoformat(due_date_str)
+        except ValueError:
+            return redirect(url_for("loans.loans_page", status="invalid_due_date"))
+
+    loan = Loan(user_id=user_id, item_id=item_id, due_date=due_date)
+    item.available = False
+    db.session.add(loan)
+    db.session.commit()
+    return redirect(url_for("loans.loans_page", status="created"))
+
+
+@loans_bp.route("/page/<int:loan_id>/return", methods=["POST"])
+def loans_page_return(loan_id):
+    """Mark a loan as returned from the browser page."""
+    loan = db.get_or_404(Loan, loan_id)
+
+    if not loan.is_active:
+        return redirect(url_for("loans.loans_page", status="already_returned"))
+
+    loan.returned_at = datetime.now(timezone.utc)
+    loan.item.available = True
+    db.session.commit()
+    return redirect(url_for("loans.loans_page", status="returned"))
 
 
 @loans_bp.route("/", methods=["GET"])

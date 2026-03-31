@@ -54,6 +54,12 @@
         flex-wrap: wrap;
       }
 
+      .nav-group {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+      }
+
       .nav-links a,
       .button-link {
         text-decoration: none;
@@ -130,6 +136,67 @@
         margin-bottom: 0.75rem;
       }
 
+      .stack-form {
+        display: grid;
+        gap: 0.5rem;
+      }
+
+      .stack-form.compact {
+        margin-bottom: 0.8rem;
+      }
+
+      input,
+      select,
+      button {
+        font: inherit;
+      }
+
+      input,
+      select {
+        width: 100%;
+        padding: 0.55rem 0.65rem;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        background: #fff;
+      }
+
+      button {
+        border: 0;
+        cursor: pointer;
+      }
+
+      .danger-btn {
+        padding: 0.55rem 0.8rem;
+        border-radius: 10px;
+        background: #cc2936;
+        color: #fff;
+        font-weight: 600;
+      }
+
+      .danger-btn:hover,
+      .danger-btn:focus-visible {
+        background: #ad1f2b;
+      }
+
+      .checkbox-row {
+        display: flex;
+        gap: 0.5rem;
+        align-items: center;
+      }
+
+      .checkbox-row input {
+        width: auto;
+      }
+
+      .status-line {
+        display: inline-block;
+        padding: 0.4rem 0.75rem;
+        border-radius: 999px;
+        background: #eef5ff;
+        color: var(--primary-dark);
+        font-weight: 600;
+      }
+
       .endpoint-path {
         display: inline-block;
         margin: 0.75rem 0 1rem;
@@ -156,9 +223,18 @@
     <nav class="navbar">
       <a class="brand" href="/">BUA Renting Service</a>
       <div class="nav-links">
-        <a href="/users/">Users</a>
-        <a href="/items/">Items</a>
-        <a href="/loans/">Loans</a>
+        <div class="nav-group">
+          <a href="/users/page">Users page</a>
+          <a href="/users/">API</a>
+        </div>
+        <div class="nav-group">
+          <a href="/items/page">Items page</a>
+          <a href="/items/">API</a>
+        </div>
+        <div class="nav-group">
+          <a href="/loans/page">Loans page</a>
+          <a href="/loans/">API</a>
+        </div>
       </div>
     </nav>
     <main>{% block content %}{% endblock %}</main>

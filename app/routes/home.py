@@ -11,16 +11,19 @@ def index():
         {
             "name": "Users",
             "path": "/users/",
+            "web_path": "/users/page",
             "description": "Browse and register BUA members.",
         },
         {
             "name": "Items",
             "path": "/items/",
+            "web_path": "/items/page",
             "description": "See equipment available for lending.",
         },
         {
             "name": "Loans",
             "path": "/loans/",
+            "web_path": "/loans/page",
             "description": "Track active and returned loans.",
         },
     ]

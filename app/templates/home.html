@@ -8,14 +8,13 @@
       This BUA demo app gives you a quick way to browse the API resources and
       jump straight into the parts of the system you want to test.
     </p>
-    <a class="button-link" href="/items/">Explore available items</a>
+    <a class="button-link" href="/items/page">Open management pages</a>
   </div>
   <div class="hero-card">
     <h2>Quick start</h2>
     <p>
-      Use the navigation bar to open each resource directly in your browser. The
-      linked pages return JSON, which is perfect for API testing while you build
-      out more functionality.
+      Use the navigation bar to switch between HTML management pages and JSON
+      API endpoints. The pages let you perform core actions from the browser.
     </p>
   </div>
 </section>
@@ -29,10 +28,11 @@
       <p>{{ endpoint.description }}</p>
       <span class="endpoint-path">{{ endpoint.path }}</span>
       <div>
-        <a class="button-link" href="{{ endpoint.path }}"
-          >Open {{ endpoint.name }}</a
+        <a class="button-link" href="{{ endpoint.web_path }}"
+          >Open {{ endpoint.name }} page</a
         >
       </div>
+      <p><a href="{{ endpoint.path }}">Open JSON API endpoint</a></p>
     </article>
     {% endfor %}
   </div>
